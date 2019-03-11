@@ -6,7 +6,7 @@ import (
 
 	"flag"
 	"github.com/mmlt/apigw/gateway"
-	"github.com/mmlt/testsvr/testsvr"
+	"github.com/mmlt/apigw/test/server"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
@@ -66,22 +66,22 @@ oauth2idp:
 `, ingressPort, upstreamPort1, upstreamPort2, upstreamPort1, oauth2idpPort)
 
 var (
-	gw        *gateway.gateway
-	upstream1 *testsvr.Testsvr
-	upstream2 *testsvr.Testsvr
-	idp       *testsvr.Testsvr
+	gw        *gateway.Gateway
+	upstream1 *server.Testsvr
+	upstream2 *server.Testsvr
+	idp       *server.Testsvr
 )
 
 func Setup() {
 	// Create upstream servers.
-	upstream1 = testsvr.Multipurpose("upstream1", upstreamPort1)
+	upstream1 = server.Multipurpose("upstream1", upstreamPort1)
 	go func() {
 		if err := upstream1.Run(); err != nil {
 			fmt.Println(upstream1.Name, "Run", err)
 		}
 	}()
 
-	upstream2 = testsvr.Multipurpose("upstream2", upstreamPort2)
+	upstream2 = server.Multipurpose("upstream2", upstreamPort2)
 	go func() {
 		if err := upstream2.Run(); err != nil {
 			fmt.Println(upstream2.Name, "Run", err)
@@ -89,7 +89,7 @@ func Setup() {
 	}()
 
 	// Create an oauth2 tokeninfo server.
-	idp = testsvr.IDP("idp", oauth2idpPort)
+	idp = server.IDP("idp", oauth2idpPort)
 	go func() {
 		if err := idp.Run(); err != nil {
 			fmt.Println(idp.Name, "Run", err)

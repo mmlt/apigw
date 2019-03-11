@@ -48,7 +48,7 @@ The APIGW will only pass a request to the upstream service when all of the follo
 
 ## Roadmap
 - Add API level throttling.
-- Add client specific throttling (see below and github.com/didip/toolbooth).
+- Add client specific throttling 
 - Fuzzing of request urls.
 - Add Swagger parameter validation (currently a {parameter} matches any type). Swagger definition contains (parameters specs)[https://swagger.io/docs/specification/2-0/describing-parameters/] 
   - unit test that checks parameter types
@@ -57,34 +57,10 @@ The APIGW will only pass a request to the upstream service when all of the follo
 - Create /health endpoint (on management port) that checks internal state
 - Improve configuration
   - Dynamic configuration of CORS Access-Control-Allow-Origin header. For example a ConfigMap with allowed origins that is easy to reload.
-  - create a /reload endpoint (on management port) to dynamically reload config
-  - detect changes in swagger definition and reload
-  - Apigw is configured by REST. K8s controller drives the REST interface. Configuration issues are presented as Events.
-
-
-### Client specific ratelimiting
-Client specific throttling (rate limiting) can be implemented by:
-a. defaulting to 1000 QPS and raising the limit by adding an OAuth2 scope. 
- Con: his creates exceptions in OAuth2 middleware scope handling.
-b. defaulting to 1000 QPS and passing the apigw a config with ClientId-QPS mapping overrides.
-
-Throttling when multiple gw's are used requires some form of communication.
-Simple (good enough if traffic is evenly distributed amongst gw):
-  1. quota = QPS / number of gw
-Peer to peer: 
-  1. count number of peers, each peer get QPS/nr
-  2. if a gw's quotum runs out it asks the other peers (round robin) for more (that the peer subtracts from its own quotum) 
-Coordinator:
-  1. coordinator assign quota to gw
-  2. if a gw uses more then another gw then quota are rebalenced
-
-Note: Forgerock IG doesn't support client specific throttling because of the limited use-case vs complexit.
+  - Create a /reload endpoint (on management port) to dynamically reload config when the ConfigMap is updated. 
 
 ## Architecture
-
-[echo](https://echo.labstack.com/)
-
-middleware:
+[echo](https://echo.labstack.com/) middleware:
 - error handler with custom messages
 - path rewriting
 - CORS header handling
@@ -93,14 +69,11 @@ middleware:
 
 
 ## Run
-
-Apigw is configured by yaml file, see `configYaml` in apigw_test.go for an up-to-date example.
-
-
-
+Apigw is configured by yaml file, see `configYaml` in apigw_test.go for an example.
 
 
 ## Development
+Prereqs: GO 1.12 or later, GOBIN in path
 
 ### Run tests
 See Makefile on how to run tests.

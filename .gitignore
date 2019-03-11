@@ -1,6 +1,8 @@
 pkg/
 .idea/
-*.pem
 *.cov
+*.pem
+*.tmp
 _*
 apigw
+main
