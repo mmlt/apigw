@@ -142,7 +142,7 @@ func customHTTPErrorHandler(tmpl string) (echo.HTTPErrorHandler, error) {
 		c.Response().WriteHeader(e.Status)
 		err := t.Execute(c.Response().Writer, e)
 		if err != nil {
-			glog.Warning("customHTTPErrorHandler: %v", err)
+			glog.Warning("customHTTPErrorHandler: ", err)
 			// respond with plain json
 			c.JSON(e.Status, e)
 		}

@@ -2,14 +2,14 @@
 package main
 
 import (
-	"fmt"
-
 	"flag"
+	"fmt"
 	"github.com/mmlt/apigw/gateway"
 	"github.com/mmlt/apigw/test/server"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
+	"net"
 	"net/http"
 	"os"
 	"strings"
@@ -97,8 +97,10 @@ func Setup() {
 	}()
 
 	// wait for servers to start
-	// TODO change to http get check?
-	time.Sleep(100 * time.Millisecond)
+	upstream1.WaitForReadiness()
+	upstream2.WaitForReadiness()
+	idp.WaitForReadiness()
+
 
 	// Create Gateway.
 	// parse config
@@ -115,9 +117,14 @@ func Setup() {
 		}
 	}()
 
-	// wait for servers to start
-	// TODO change to http get check as start time varies a lot (linux <100mS, Windows <500mS)?
-	time.Sleep(500 * time.Millisecond)
+	// wait for apigw to start
+	conn,_ := net.DialTimeout("tcp", ingressPort, time.Second)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	time.Sleep(time.Second)
+	conn.Close()
 }
 
 func Teardown() {

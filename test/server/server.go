@@ -5,6 +5,7 @@ import (
 	"context"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	"net"
 
 	"fmt"
 	"golang.org/x/net/websocket"
@@ -19,7 +20,7 @@ type Testsvr struct {
 	Echo *echo.Echo
 }
 
-// IDP creates an IDP mock testsvr.
+// IDP creates an IDP mock server.
 // Paths:
 //	/oauth2/tokeninfo - OAuth2 tokeninfo endpoint with hardcoded token-response pairs.
 func IDP(name, port string) *Testsvr {
@@ -89,6 +90,9 @@ func Multipurpose(name, port string) *Testsvr {
 		return c.HTML(http.StatusOK, "public "+name)
 	})
 	e.GET("/read", func(c echo.Context) error {
+		fmt.Println()
+		fmt.Println("/read")
+
 		return c.HTML(http.StatusOK, "read "+name)
 	})
 	e.GET("/write", func(c echo.Context) error {
@@ -120,6 +124,16 @@ func Multipurpose(name, port string) *Testsvr {
 // Run the server.
 func (t *Testsvr) Run() error {
 	return t.Echo.Start(t.Port)
+}
+
+// WaitForReadiness waits for the server to respond.
+func (t *Testsvr) WaitForReadiness() error {
+	conn, err := net.DialTimeout("tcp", t.Port, time.Second)
+	if err != nil {
+		return err
+	}
+	conn.Close()
+	return nil
 }
 
 // Shutdown stops server the gracefully.

@@ -77,9 +77,10 @@ func LoggerWithConfig(config LoggerConfig) echo.MiddlewareFunc {
 			// invoke handler
 			start := time.Now()
 			err = next(c)
-			if err != nil {
-				c.Error(err)
-			}
+			//errors will be logged by HTTPErrorHandler in echo.ServeHTTP()
+			//if err != nil {
+			//	c.Error(err)
+			//}
 			stop := time.Now()
 
 			// get values for later on

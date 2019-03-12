@@ -23,6 +23,6 @@ teste2e:
 	go test -covermode=count -coverpkg="$(MODULE)/..." -coverprofile=teste2e.cov apigw_test.go
 
 testresults:
-	cd $(MODULE_DIR) && gocovmerge teste2e.cov test.cov > all.cov
-	cd $(MODULE_DIR) && go tool cover -html all.cov
-	cd $(MODULE_DIR) && go tool cover -func=all.cov
+	gocovmerge teste2e.cov test.cov > all.cov
+	go tool cover -html all.cov
+	go tool cover -func=all.cov
