@@ -50,10 +50,10 @@ The APIGW will only pass a request to the upstream service when all of the follo
 - Add API level throttling.
 - Add client specific throttling 
 - Fuzzing of request urls.
-- Add Swagger parameter validation (currently a {parameter} matches any type). Swagger definition contains (parameters specs)[https://swagger.io/docs/specification/2-0/describing-parameters/] 
+- Add Swagger parameter validation (currently a {parameter} matches any type). Swagger definition contains [parameters specs](https://swagger.io/docs/specification/2-0/describing-parameters/) 
   - unit test that checks parameter types
   - Use go-swagger instead of openapi package, see func (c *Context) RouteInfo(request *http.Request) (*MatchedRoute, *http.Request, bool)
-  - (how-to-serve-two-or-more-swagger-specs-from-one-server)[https://github.com/go-swagger/go-swagger/blob/master/docs/faq/faq_server.md#how-to-serve-two-or-more-swagger-specs-from-one-server]
+  - [how-to-serve-two-or-more-swagger-specs-from-one-server](https://github.com/go-swagger/go-swagger/blob/master/docs/faq/faq_server.md#how-to-serve-two-or-more-swagger-specs-from-one-server)
 - Create /health endpoint (on management port) that checks internal state
 - Improve configuration
   - Dynamic configuration of CORS Access-Control-Allow-Origin header. For example a ConfigMap with allowed origins that is easy to reload.
