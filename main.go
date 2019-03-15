@@ -18,12 +18,12 @@ import (
 )
 
 var (
-	// Version as set during build.
+	// Version set during build.
 	Version string
 
 	// cli flags
 	configPath = flag.String("config", "config.yaml",
-		`config file path.`)
+		`config file path`)
 )
 
 func main() {
@@ -32,7 +32,7 @@ func main() {
 	pflag.Parse()
 	flag.Parse() // glog needs flag otherwise it will prefix 'ERROR: logging before flag.Parse:' to each message.
 
-	s := fmt.Sprintf("Start gateway %s ", Version)
+	s := fmt.Sprintf("Start apigw %s with flags: ", Version)
 	pflag.VisitAll(func(flag *pflag.Flag) {
 		s = fmt.Sprintf("%s %s=%q", s, flag.Name, flag.Value)
 	})
