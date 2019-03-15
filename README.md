@@ -71,9 +71,13 @@ The APIGW will only pass a request to the upstream service when all of the follo
 ## Run
 Apigw is configured by yaml file, see `configYaml` in apigw_test.go for an example.
 
+Assuming an config_http.yaml in the CWD do `apigw -v=2 --logtostderr --config=config_http.yaml` to get basic logging at stderr.
+
+
 
 ## Development
-Prereqs: GO 1.12 or later, GOBIN in path
+Prereqs: GO 1.12 or later, GOBIN in path for tooling.
+
 
 ### Run tests
 See Makefile on how to run tests.

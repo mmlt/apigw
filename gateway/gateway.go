@@ -13,7 +13,7 @@ import (
 	"sync"
 	"time"
 	"github.com/mmlt/apigw/path"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 type (

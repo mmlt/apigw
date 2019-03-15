@@ -3,11 +3,9 @@ package server
 
 import (
 	"context"
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
-	"net"
-
 	"fmt"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"golang.org/x/net/websocket"
 	"net/http"
 	"time"
@@ -90,9 +88,6 @@ func Multipurpose(name, port string) *Testsvr {
 		return c.HTML(http.StatusOK, "public "+name)
 	})
 	e.GET("/read", func(c echo.Context) error {
-		fmt.Println()
-		fmt.Println("/read")
-
 		return c.HTML(http.StatusOK, "read "+name)
 	})
 	e.GET("/write", func(c echo.Context) error {
@@ -126,26 +121,16 @@ func (t *Testsvr) Run() error {
 	return t.Echo.Start(t.Port)
 }
 
-// WaitForReadiness waits for the server to respond.
-func (t *Testsvr) WaitForReadiness() error {
-	conn, err := net.DialTimeout("tcp", t.Port, time.Second)
-	if err != nil {
-		return err
-	}
-	conn.Close()
-	return nil
-}
-
 // Shutdown stops server the gracefully.
 func (t *Testsvr) Shutdown(ctx context.Context) error {
 	return t.Echo.Shutdown(ctx)
 }
 
 // Shutdown attempts to stop server the gracefully but waits no more then the specified time for connections to close.
-func (t *Testsvr) ShutdownWithTimeout(to time.Duration) {
+func (t *Testsvr) ShutdownWithTimeout(to time.Duration) error {
 	ctx, cancel := context.WithTimeout(context.Background(), to)
 	defer cancel()
-	t.Shutdown(ctx)
+	return t.Shutdown(ctx)
 }
 
 // Index page.
@@ -183,7 +168,7 @@ var index = `
 `
 
 // Swagger definition for this server.
-//TODO remove x-scope??
+// Note: x-scope specifies the required oauth2 scope.
 var swagger = `
 {
   "swagger": "2.0",

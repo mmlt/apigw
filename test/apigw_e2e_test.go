@@ -97,10 +97,9 @@ func Setup() {
 	}()
 
 	// wait for servers to start
-	upstream1.WaitForReadiness()
-	upstream2.WaitForReadiness()
-	idp.WaitForReadiness()
-
+	mustServerStartsResponding("upstream1", upstreamPort1, time.Second)
+	mustServerStartsResponding("upstream2", upstreamPort2, time.Second)
+	mustServerStartsResponding("idp", oauth2idpPort, time.Second)
 
 	// Create Gateway.
 	// parse config
@@ -117,14 +116,25 @@ func Setup() {
 		}
 	}()
 
-	// wait for apigw to start
-	conn,_ := net.DialTimeout("tcp", ingressPort, time.Second)
-	if err != nil {
-		fmt.Println(err)
-		return
+	mustServerStartsResponding("gateway", ingressPort, 2 * time.Second)
+}
+
+// MustServerStartsResponding waits for a server to start serving a TCP socket.
+func mustServerStartsResponding(name string, port string, maxTime time.Duration) {
+	var err error
+	t := time.Duration(maxTime.Nanoseconds() / 10)
+	for i := 0; i < 10; i++ {
+		conn, err := net.DialTimeout("tcp", port, t)
+		if err != nil {
+			time.Sleep(t)
+			continue
+		}
+		conn.Close()
+		break
 	}
-	time.Sleep(time.Second)
-	conn.Close()
+	if err != nil {
+		panic(fmt.Errorf("%s didn't start responding in %v: %v", name, t, err))
+	}
 }
 
 func Teardown() {
@@ -188,7 +198,7 @@ func TestOAuth2IDPHttpGet(t *testing.T) {
 	resp.Body.Close()
 }
 
-// TestGwHttpGet shows that:
+// TestGwHttpGet shows that (without a valid bearer token):
 // - proper status codes are returned for paths that exist, do not exist, require authentication.
 // - multiple HTTP Get's on the gateway load balances over the upstream servers.
 func TestGwHttpGet(t *testing.T) {
@@ -215,7 +225,6 @@ func TestGwHttpGet(t *testing.T) {
 			}
 			assert.Equal(t, tst.want, resp.StatusCode, tst.comment)
 			body, _ := ioutil.ReadAll(resp.Body)
-			//fmt.Println(string(body)) //!!!TODO
 			resp.Body.Close()
 			if resp.StatusCode == http.StatusOK {
 				// the body text ends with the server name

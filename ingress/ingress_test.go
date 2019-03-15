@@ -2,7 +2,7 @@ package ingress
 
 import (
 	"errors"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"net/http/httptest"
@@ -19,7 +19,7 @@ func TestCustomHTTPErrorHandler(t *testing.T) {
 		{errors.New("Plain text"), "{{.Status}} {{.Message}}", 500, "500 Plain text"},
 		{echo.NewHTTPError(401, "Not allowed"), "{{.Status}} {{.Message}}", 401, "401 Not allowed"},
 		{echo.NewHTTPError(404, "Not found"), "", 404, ""},
-		{echo.NewHTTPError(404, "Not found"), "{{.ThisNameIsNotDefined}}", 404, "{\"Status\":404,\"Message\":\"Not found\"}"},
+		{echo.NewHTTPError(404, "Not found"), "{{.ThisNameIsNotDefined}}", 404, "{\"Status\":404,\"Message\":\"Not found\"}\n"},
 	}
 
 	e := echo.New()

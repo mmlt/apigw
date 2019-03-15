@@ -1,11 +1,10 @@
 #.PHONY all build bake push login
 
-VERSION?=0.0.7
-
+VERSION?=v0.0.9
 MODULE=github.com/mmlt/apigw
-MODULE_DIR=${GOPATH}/src/$(MODULE)
 
-all: build bake push
+
+all: build test release
 
 build: 
 	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags "-X main.Version=$(VERSION)" $(MODULE)
@@ -16,7 +15,7 @@ lint:
 test: testu teste2e testresults
 
 testunit:
-	./test.sh
+	./hack/test.sh
 
 teste2e:
 	# -race
@@ -26,3 +25,7 @@ testresults:
 	gocovmerge teste2e.cov test.cov > all.cov
 	go tool cover -html all.cov
 	go tool cover -func=all.cov
+
+release:
+	./hack/release.sh $(VERSION)
+

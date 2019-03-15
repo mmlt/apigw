@@ -4,8 +4,7 @@ package ingress
 import (
 	"fmt"
 	"github.com/golang/glog"
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
+	"github.com/labstack/echo/v4"
 	"github.com/mmlt/apigw/mw"
 	"net/http"
 	"net/url"
@@ -85,7 +84,6 @@ func NewWithConfig(cfg *Config, scopesFn mw.ScopesFunc, tokeninfoFn mw.Tokeninfo
 	// CORS headers
 	e.Use(mw.CORSWithConfig(mw.CORSConfig{
 		AllowOrigins: cfg.Middleware.Cors.AllowOrigins,
-		//TODO AllowMethods: cfg.Middleware.Cors.AllowMethods,
 		AllowMethodsFn: allowMethodsFn,
 	}))
 
@@ -96,16 +94,16 @@ func NewWithConfig(cfg *Config, scopesFn mw.ScopesFunc, tokeninfoFn mw.Tokeninfo
 	}))
 
 	// Setup reverse proxy with load balancer.
-	targets := []*middleware.ProxyTarget{}
+	targets := []*mw.ProxyTarget{}
 	for _, t := range cfg.Middleware.Proxy.Targets {
 		u, err := url.Parse(t)
 		if err != nil {
 			glog.Fatal(err)
 		}
-		targets = append(targets, &middleware.ProxyTarget{URL: u})
+		targets = append(targets, &mw.ProxyTarget{URL: u})
 	}
-	lb := middleware.NewRoundRobinBalancer(targets)
-	e.Use(middleware.Proxy(lb))
+	lb := mw.NewRoundRobinBalancer(targets)
+	e.Use(mw.Proxy(lb))
 
 	return &Ingress{Port: cfg.Bind, Echo: e, certFile: cfg.TLS.Cert, keyFile: cfg.TLS.Key}
 }
