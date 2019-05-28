@@ -111,6 +111,9 @@ Login via Examplesite to obtain a bearer token, then get accounts:
 
 ### Known issues
 
+All headers send by back-end are copied in response. In some cases this violates the specs.
+For example when a backend returns an `Access-Control-Allow-Origin` header.
+Work-a-round: backend should not send `Access-Control-Allow` headers.
 
 
 
