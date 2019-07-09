@@ -78,6 +78,8 @@ Assuming an config_http.yaml in the CWD do `apigw -v=2 --logtostderr --config=co
 ## Development
 Prereqs: GO 1.12 or later, GOBIN in path for tooling.
 
+Uses https://github.com/itchio/gothub for release.
+
 
 ### Run tests
 See Makefile on how to run tests.
