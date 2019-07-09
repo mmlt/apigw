@@ -27,5 +27,5 @@ testresults:
 	go tool cover -func=all.cov
 
 release:
-	./hack/release.sh $(VERSION)
+	./hack/release.sh $(VERSION) $(VERSION)
 

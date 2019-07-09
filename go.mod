@@ -9,6 +9,7 @@ require (
 	github.com/asaskevich/govalidator v0.0.0-20180315120708-ccb8e960c48f
 	github.com/davecgh/go-spew v1.1.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/go-openapi/analysis v0.0.0-20180126163718-f59a71f0ece6
 	github.com/go-openapi/errors v0.0.0-20171226161601-7bcb96a367ba
 	github.com/go-openapi/jsonpointer v0.0.0-20170102174223-779f45308c19
@@ -20,6 +21,7 @@ require (
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
 	github.com/golangci/golangci-lint v1.15.0 // indirect
 	github.com/google/shlex v0.0.0-20181106134648-c34317bd91bf // indirect
+	github.com/itchio/gothub v0.7.0 // indirect
 	github.com/labstack/echo/v4 v4.0.0
 	github.com/labstack/gommon v0.2.8
 	github.com/mailru/easyjson v0.0.0-20180320131758-517203d186eb
@@ -34,6 +36,7 @@ require (
 	github.com/stretchr/testify v1.3.0
 	github.com/valyala/bytebufferpool v1.0.0
 	github.com/valyala/fasttemplate v0.0.0-20170224212429-dcecefd839c4
+	github.com/voxelbrain/goptions v0.0.0-20180630082107-58cddc247ea2 // indirect
 	golang.org/x/crypto v0.0.0-20190130090550-b01c7a725664
 	golang.org/x/net v0.0.0-20181201002055-351d144fa1fc
 	golang.org/x/sys v0.0.0-20190129075346-302c3dd5f1cc
