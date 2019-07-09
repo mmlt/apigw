@@ -76,9 +76,10 @@ Assuming an config_http.yaml in the CWD do `apigw -v=2 --logtostderr --config=co
 
 
 ## Development
-Prereqs: GO 1.12 or later, GOBIN in path for tooling.
+Prereqs: GO 1.12 or later, GOBIN in path for tools.
 
-Uses https://github.com/itchio/gothub for release.
+Tools:
+- https://github.com/itchio/gothub for github release
 
 
 ### Run tests
