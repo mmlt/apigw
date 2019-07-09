@@ -62,7 +62,7 @@ func TestSpecOAuth2ScopeIter(t *testing.T) {
 	expect["/instruments/derivatives"] = "GET[read]"
 
 	if len(expect) != len(got) {
-		t.Errorf("expected len %d, got %d", len(expect), len(got))
+		t.Errorf("expected %d paths, got %d", len(expect), len(got))
 	}
 
 	for path, g := range got {
@@ -1240,13 +1240,6 @@ var swagger = `
           }
         },
         "deprecated": false,
-        "security": [
-          {
-            "oauth2": [
-              ""
-            ]
-          }
-        ],
         "x-throttling-tier": "Unlimited",
         "x-auth-type": "None",
         "x-scope": ""

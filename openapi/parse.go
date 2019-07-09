@@ -24,15 +24,20 @@ func SpecFromRaw(json []byte) (*spec.Swagger, error) {
 func SpecOAuth2ScopeIter(specification *spec.Swagger, fn OAuth2ScopeIterFunc) {
 	op := func(path string, method string, prop *spec.Operation, fn OAuth2ScopeIterFunc) {
 		if prop == nil {
+			// no properties so ignore path
 			return
 		}
 
 		if len(prop.Security) == 0 {
+			// no Security properties so no scopes
+			fn(path, method, nil)
 			return
 		}
 
 		scopes, ok := prop.Security[0]["oauth2"]
 		if !ok {
+			// no oauth2 property so no scopes
+			fn(path, method, nil)
 			return
 		}
 

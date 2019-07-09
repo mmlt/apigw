@@ -1,6 +1,6 @@
 #.PHONY all build bake push login
 
-VERSION?=v0.0.9
+VERSION?=v0.0.10
 MODULE=github.com/mmlt/apigw
 
 
